@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { initAnchorScroll } from './lib/scrollTo'
 import { useSmoothScroll } from './components/useSmoothScroll'
 import Header from './sections/Header'
 import Hero from './sections/Hero'
@@ -14,7 +16,8 @@ import Footer from './sections/Footer'
 
 export default function App() {
   useSmoothScroll()
-
+  useEffect(() => initAnchorScroll(), [])
+  
   return (
     <>
       <Header />

@@ -14,6 +14,7 @@
 
 html {
   scroll-behavior: auto; /* плавный скролл берёт на себя Lenis, а не CSS */
+  scroll-padding-top: 6rem; /* высота шапки */
 }
 
 body {
@@ -27,7 +28,7 @@ body {
 .heading-brand {
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.05;
+  line-height: 1.3;
   font-size: clamp(1.5rem, 1rem + 2.8vw, 3rem); /* ~24px -> 48px */
 }
   

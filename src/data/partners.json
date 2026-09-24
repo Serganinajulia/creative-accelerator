@@ -1,20 +1,17 @@
 {
-  "organizers": [
-    { "name": "Национальные проекты России", "logo": "/assets/partners/nacproekty.png", "url": "https://экономика.рф", "placement": ["header", "footer"] },
-    { "name": "МИНИНВЕСТ", "logo": "/assets/partners/mininvest.png", "url": "#", "placement": ["header", "footer"] },
-    { "name": "Мой бизнес", "logo": "/assets/partners/moybiznes.png", "url": "#", "placement": ["header", "footer"] },
-    { "name": "Федерация креативных индустрий", "logo": "/assets/partners/fki.png", "url": "#", "placement": ["header", "footer"] }
-  ],
-  "projectPartners": [
-    { "name": "Опора России", "logo": "/src/assets/partners/opora.svg", "url": "https://opora.ru/", "placement": ["organizers-block"] }
-  ],
-  "infoPartners": [
-    { "name": "Telegram-канал ФКИ", "logo": "/src/assets/partners/tg-fki.svg", "url": "https://t.me/redbuttonCIF", "placement": ["organizers-block"] }
-  ],
-  "infoResources": [
-    { "name": "Инвестиционный портал Подмосковья", "logo": "/src/assets/partners/invest-mosreg.svg", "url": "https://invest.mosreg.ru/", "placement": ["organizers-block"] },
-    { "name": "МСП.РФ", "logo": "/src/assets/partners/msp-rf.svg", "url": "https://мсп.рф/", "placement": ["organizers-block"] },
-    { "name": "Telegram: субсидии МО", "logo": "/src/assets/partners/tg-subsidii.svg", "url": "https://t.me/sybsidiiMO", "placement": ["organizers-block"] },
-    { "name": "Telegram: Мой бизнес МО", "logo": "/src/assets/partners/tg-mybusiness.svg", "url": "https://t.me/mybusinessmo", "placement": ["organizers-block"] }
-  ]
+  "organizers": {
+    "title": "Центр «Мой Бизнес» Московской области при поддержке Федерации креативных индустрий",
+    "items": [
+      { "name": "Мой бизнес", "logo": "public/assets/partners/moybiznes.png", "url": "https://xn--90aifddrld7a.xn--p1ai/" },
+      { "name": "Федерация креативных индустрий", "logo": "public/assets/partners/fki.png", "url": "https://www.creative-russia.ru/" },
+      { "name": "Национальные проекты России", "logo": "public/assets/partners/nacproekty.png", "url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/" },
+      { "name": "МИНИНВЕСТ", "logo": "public/assets/partners/mininvest.png", "url": "https://mii.mosreg.ru/" }
+    ]
+  },
+  "infoPartners": {
+    "title": "Информационная поддержка",
+    "items": [
+      { "name": "Telegram-канал ФКИ", "logo": "public/assets/partners/red-button.svg", "url": "https://t.me/redbuttonCIF" }
+    ]
+  }
 }

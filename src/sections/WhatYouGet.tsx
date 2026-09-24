@@ -37,8 +37,8 @@ export default function WhatYouGet() {
       <Reveal>
         <SectionHeading className="mb-8">{texts.whatYouGet.title}</SectionHeading>
       </Reveal>
-      {/* обычная сетка 3 в ряд, все карточки одного размера */}
-      <div className="grid md:grid-cols-3 gap-4">
+      {/* 4 карточки: 2×2 на планшете, в ряд на десктопе */}
+      <div className="grid gap-4 grid-cols-2">
         {texts.whatYouGet.items.map((item, i) => (
           <Reveal key={item.title + i} delay={i * 0.08}>
             <SpotlightCard title={item.title} description={item.description} />

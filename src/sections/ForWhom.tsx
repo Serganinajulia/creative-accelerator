@@ -65,15 +65,13 @@ export default function ForWhom() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
           {/* ЛЕВАЯ КОЛОНКА */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6">
             <Reveal>
               <SectionHeading>{texts.forWhom.title}</SectionHeading>
             </Reveal>
 
             <Reveal delay={0.1}>
-              <p className="text-dark/80 text-lg leading-snug bracket-frame">
-                {texts.forWhom.description}
-              </p>
+              <p className="bracket-frame text-lg leading-snug text-dark/80">{texts.forWhom.description}</p>
             </Reveal>
           </div>
 
@@ -121,6 +119,13 @@ export default function ForWhom() {
           </div>
 
         </div>
+                {/* приоритет при отборе */}
+        <Reveal delay={0.1}>
+          <div className="mt-12 flex items-start gap-4 rounded-2xl bg-primary p-6 text-white md:mt-16 md:items-center md:p-8">
+            <img src="/assets/general/mark.svg" alt="" className="mt-1 h-6 w-6 shrink-0 brightness-0 invert md:mt-0" />
+            <p className="text-lg font-semibold leading-snug md:text-xl">{texts.forWhom.priority}</p>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import texts from '../data/texts.json'
 import Reveal from '../components/Reveal'
@@ -12,21 +13,27 @@ const ICON_CONFIG: Record<IconType, { src: string; color: string }> = {
 
 function BentoCard({
   title,
+  value,
   description,
   icon,
+  lead = false,
+  children,
 }: {
   title: string
+  value?: string
   description?: string
   icon?: IconType
+  lead?: boolean
+  children?: ReactNode
 }) {
   const iconConfig = icon ? ICON_CONFIG[icon] : null
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-white text-dark p-6 min-h-[180px] h-full flex flex-col justify-center shadow-sm hover:shadow-md transition-shadow">
+    <div className="relative flex h-full min-h-[180px] flex-col justify-center overflow-hidden rounded-3xl bg-white p-6 text-dark shadow-sm transition-shadow hover:shadow-md md:p-8">
       {iconConfig && (
         <motion.div
           aria-hidden
-          className="absolute -bottom-10 -right-10 w-40 h-40 opacity-[0.07] pointer-events-none"
+          className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 opacity-[0.07]"
           style={{
             backgroundColor: iconConfig.color,
             WebkitMaskImage: `url(${iconConfig.src})`,
@@ -36,11 +43,7 @@ function BentoCard({
             WebkitMaskRepeat: 'no-repeat',
             maskRepeat: 'no-repeat',
           }}
-          animate={
-            icon === 'snowflake'
-              ? { rotate: 360 }
-              : { y: [0, -10, 0] }
-          }
+          animate={icon === 'snowflake' ? { rotate: 360 } : { y: [0, -10, 0] }}
           transition={
             icon === 'snowflake'
               ? { duration: 34, repeat: Infinity, ease: 'linear' }
@@ -49,59 +52,78 @@ function BentoCard({
         />
       )}
 
-      <h3 className="relative font-bold text-lg md:text-xl leading-snug text-primary">{title}</h3>
-      {description && <p className="relative text-dark/60 mt-2">{description}</p>}
+      {/* крупная цифра */}
+      {value && (
+        <p className="relative text-6xl font-extrabold leading-none text-primary md:text-7xl">{value}</p>
+      )}
+
+      {lead ? (
+        <p className="relative text-xl font-semibold leading-snug text-primary md:text-2xl">{title}</p>
+      ) : (
+        <h3
+          className={`relative text-lg font-bold leading-snug md:text-xl ${
+            value ? 'mt-3 text-dark' : 'text-primary'
+          }`}
+        >
+          {title}
+        </h3>
+      )}
+
+      {description && <p className="relative mt-2 text-dark/60">{description}</p>}
+      {children && <div className="relative mt-4">{children}</div>}
     </div>
   )
 }
 
 export default function ShortAbout() {
-  const items = texts.shortAbout.items
-  const titleWords = texts.shortAbout.title.split(' ')
-  const [titleFirst, ...titleRestArr] = titleWords
-  const titleRest = titleRestArr.join(' ')
-
-  // Разбиваем массив элементов под заданные роли:
-  const card1 = items[0] // Верхняя левая (1/3) — без иконки
-  const card2 = items[1] // Верхняя правая (2/3) — снежинка
-  const card3 = items[2] // Левая объединяющая (1/3, 2 строки) — стрелка вверх
-  const rightQuadItems = items.slice(3, 7) // 4 карточки правого блока — без иконок
+  const s = texts.shortAbout
 
   return (
     <section id="short-about" className="bg-surface py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <SectionHeading className="mb-8">
-            <span className="bracket-word bracket-word--accent">{titleFirst}</span> {titleRest}
+            {s.title} <span className="bracket-word bracket-word--accent">{s.titleAccent}</span>
           </SectionHeading>
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {card1 && (
-            <Reveal delay={0}>
-              <BentoCard title={card1.title} description={card1.description} />
-            </Reveal>
-          )}
+        {/*
+          ┌───────────── lead (2) ─────────────┬──── 20 ────┐
+          ├── вебинары (2 строки) ──┬── трекер (2) ─────────┤
+          │                         ├── кураторы ─┬─ защита ┤
+        */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <Reveal delay={0} className="md:col-span-2">
+            <BentoCard title={s.lead} lead />
+          </Reveal>
 
-          {card2 && (
-            <Reveal delay={0.08} className="md:col-span-2">
-              <BentoCard title={card2.title} description={card2.description} icon="snowflake" />
-            </Reveal>
-          )}
+          <Reveal delay={0.08}>
+            <BentoCard value={s.participants.value} title={s.participants.label} />
+          </Reveal>
 
-          {card3 && (
-            <Reveal delay={0.16} className="md:row-span-2">
-              <BentoCard title={card3.title} description={card3.description} icon="arrow" />
-            </Reveal>
-          )}
+          <Reveal delay={0.16} className="md:row-span-2">
+            <BentoCard value={s.webinars.value} title={s.webinars.label} icon="arrow">
+              {s.webinars.topics.length > 0 && (
+                <ul className="space-y-2 text-dark/70">
+                  {s.webinars.topics.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              )}
+            </BentoCard>
+          </Reveal>
 
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {rightQuadItems.map((item, idx) => (
-              <Reveal key={item.title + idx} delay={0.24 + idx * 0.08}>
-                <BentoCard title={item.title} description={item.description} />
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={0.24} className="md:col-span-2">
+            <BentoCard value={s.tracker.value} title={s.tracker.label} icon="snowflake" />
+          </Reveal>
+
+          <Reveal delay={0.32}>
+            <BentoCard title={s.curators} />
+          </Reveal>
+
+          <Reveal delay={0.4}>
+            <BentoCard title={s.defense} />
+          </Reveal>
         </div>
       </div>
     </section>

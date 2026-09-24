@@ -1,15 +1,25 @@
 import partners from '../data/partners.json'
 import Reveal from '../components/Reveal'
+import SectionHeading from '../components/SectionHeading'
 
-function LogoRow({ title, items }: { title: string; items: { name: string; logo: string; url: string }[] }) {
+type Partner = { name: string; logo: string; url: string }
+
+function LogoGroup({ title, items }: { title: string; items: Partner[] }) {
   if (!items.length) return null
   return (
-    <div className="mb-10">
-      <p className="uppercase tracking-wide text-dark/50 mb-4">{title}</p>
-      <div className="flex flex-wrap gap-8 items-center">
+    <div>
+      <p className="mb-8 max-w-3xl text-lg font-semibold text-white md:text-xl">{title}</p>
+      <div className="flex flex-wrap items-center gap-x-12 gap-y-8">
         {items.map((p) => (
-          <a key={p.name} href={p.url} target="_blank" rel="noreferrer" title={p.name}>
-            <img src={p.logo} alt={p.name} className="h-10 w-auto grayscale hover:grayscale-0 transition-all" />
+          <a 
+            key={p.name}
+            href={p.url}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={p.name}
+            className="transition duration-300 hover:scale-105 hover:opacity-80"
+          >
+            <img src={p.logo} alt={p.name} className="h-14 w-auto md:h-16" />
           </a>
         ))}
       </div>
@@ -18,23 +28,27 @@ function LogoRow({ title, items }: { title: string; items: { name: string; logo:
 }
 
 export default function OrganizersPartners() {
+  const { organizers, infoPartners } = partners
+
   return (
-    <section id="organizers" className="mx-auto max-w-7xl px-6 py-20">
-      <Reveal>
-        <h2 className="text-2xl md:text-3xl font-bold text-primary mb-10">Организаторы и партнёры</h2>
-      </Reveal>
-      <Reveal>
-        <LogoRow title="Организаторы" items={partners.organizers} />
-      </Reveal>
-      <Reveal delay={0.05}>
-        <LogoRow title="Партнёры проекта" items={partners.projectPartners} />
-      </Reveal>
-      <Reveal delay={0.1}>
-        <LogoRow title="Информационные партнёры" items={partners.infoPartners} />
-      </Reveal>
-      <Reveal delay={0.15}>
-        <LogoRow title="Информационные ресурсы" items={partners.infoResources} />
-      </Reveal>
+    <section id="organizers" className="bg-primary text-white">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionHeading className="mb-12 text-white">Организаторы и партнёры</SectionHeading>
+        </Reveal>
+
+        <div className="space-y-14">
+          <Reveal delay={0.05}>
+            <LogoGroup title={organizers.title} items={organizers.items} />
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div className="border-t border-white/15 pt-14">
+              <LogoGroup title={infoPartners.title} items={infoPartners.items} />
+            </div>
+          </Reveal>
+        </div>
+      </div>
     </section>
   )
 }

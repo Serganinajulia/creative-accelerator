@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import texts from '../data/texts.json'
 import Reveal from '../components/Reveal'
 import SectionHeading from '../components/SectionHeading'
+import timeline from '../data/timelineProgram.json'
 
 const scrollToSelection = () =>
   document.getElementById('selection')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -35,7 +36,7 @@ function CriteriaQuiz() {
     setChecked((prev) => prev.map((v, j) => (j === i ? !v : v)))
 
   return (
-    <section id="criteria" className="mx-auto max-w-7xl px-6 py-20">
+    <section id="criteria" className="mx-auto max-w-7xl px-6 py-20 md:py-28">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
         {/* левая колонка: заголовок + прогресс */}
         <Reveal>
@@ -136,55 +137,162 @@ function CriteriaQuiz() {
 
 /* ───────── Роадмеп «Как попасть в акселератор» ───────── */
 
+// куски общего градиента: светло-синий → синий → фиолетовый → красно-фиолетовый → красный
+const STAGE_GRADIENTS = [
+  ['#798FB5', '#1B428F'],
+  ['#1B428F', '#6B3AA6'],
+  ['#6B3AA6', '#B8337A'],
+  ['#B8337A', '#E82B2A'],
+]
+
+const STEP = 0.6 // время заливки одной полоски, сек
+
 type Step = {
   title: string
-  pill?: string
+  showDeadline?: boolean
   subtitle?: string
   description?: string
   count?: string
+}
+
+// один раз срабатывает, когда блок заходит в экран
+function useInView<T extends Element>() {
+  const ref = useRef<T>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '0px 0px -20% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return [ref, inView] as const
+}
+
+function CriteriaDropdown({
+  label,
+  items,
+  open,
+  setOpen,
+}: {
+  label: string
+  items: string[]
+  open: boolean
+  setOpen: (v: boolean) => void
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  // закрытие по клику мимо и по Esc
+  useEffect(() => {
+    if (!open) return
+    const onClick = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('mousedown', onClick)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onClick)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open, setOpen])
+
+  return (
+    <div ref={ref} className="relative mt-3 self-start">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls="selection-criteria"
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2 text-sm text-dark/60 transition-colors hover:text-primary"
+      >
+        {label}
+        <img
+          src="/assets/general/arrow.svg"
+          alt=""
+          className={`h-3 w-3 opacity-50 transition-transform duration-300 ${
+            open ? '-rotate-45' : 'rotate-[135deg]'
+          }`}
+        />
+      </button>
+
+      <ul
+        id="selection-criteria"
+        className={`absolute left-0 top-full z-20 mt-2 w-[min(22rem,calc(100vw-3rem))] origin-top-left space-y-3 rounded-2xl bg-white p-5 shadow-xl shadow-dark/10 transition duration-200 ease-out ${
+          open ? 'scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
+        }`}
+      >
+        {items.map((e) => (
+          <li key={e} className="flex gap-3 text-sm text-dark">
+            <img src="/assets/general/mark.svg" alt="" className="mt-0.5 h-4 w-4 shrink-0 grayscale opacity-30" />
+            {e}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 
 function Selection() {
   const { titleAccent, title, evaluated } = texts.selection
   const steps = texts.selection.steps as Step[]
   const last = steps.length - 1
-  const branchInset = 'calc((100% - 3rem) / 6)'
+  const [ref, on] = useInView<HTMLOListElement>()
+  const [criteriaOpen, setCriteriaOpen] = useState(false)
+
+  const fade = on ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+  const motion = 'transition duration-500 ease-out motion-reduce:transition-none'
 
   return (
-    <section id="selection" className="mx-auto max-w-7xl scroll-mt-24 px-6 py-20">
-      <Reveal>
-        <SectionHeading>
-          <span className="bracket-word bracket-word--accent">{titleAccent}</span> {title}
-        </SectionHeading>
-      </Reveal>
+    <section id="selection" className=" bg-surface">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionHeading>
+            <span className="bracket-word bracket-word--accent">{titleAccent}</span> {title}
+          </SectionHeading>
+        </Reveal>
 
-      <Reveal delay={0.1}>
-        <div className="mt-12 grid gap-10 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-0">
-          <ol className="contents">
-            {steps.map((s, i) => (
-              <li key={s.title} className="relative flex gap-5 lg:flex-col lg:gap-0">
-                {i < last && (
-                  <span
-                    aria-hidden
-                    className="absolute left-6 top-14 -bottom-8 w-px bg-primary/20
-                      lg:left-14 lg:-right-4 lg:top-6 lg:bottom-auto lg:h-px lg:w-auto"
+        <ol ref={ref} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s, i) => {
+            const [from, to] = STAGE_GRADIENTS[i] ?? STAGE_GRADIENTS[last]
+            return (
+              <li
+                key={s.title}
+                className={`relative flex flex-col rounded-2xl bg-white ${
+                  s.subtitle && criteriaOpen ? 'z-20' : ''
+                }`}
+              >
+                {/* полоска стадии — верхний край карточки */}
+                <div className="relative h-2 overflow-hidden rounded-t-2xl bg-dark/5">
+                  <div
+                    className={`absolute inset-0 origin-left transition-transform ease-linear motion-reduce:transition-none ${
+                      on ? 'scale-x-100' : 'scale-x-0'
+                    }`}
+                    style={{
+                      background: `linear-gradient(90deg, ${from}, ${to})`,
+                      transitionDuration: `${STEP}s`,
+                      transitionDelay: `${i * STEP}s`,
+                    }}
                   />
-                )}
+                </div>
 
-                <span
-                  className={`relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-full font-bold text-white ${
-                    i === last ? 'bg-accent' : 'bg-primary'
-                  }`}
+                <div
+                  className={`flex flex-1 flex-col p-6 ${motion} ${fade}`}
+                  style={{ transitionDelay: `${i * STEP + STEP * 0.5}s` }}
                 >
-                  {i + 1}
-                </span>
+                  <h3 className="text-lg font-bold text-dark">{s.title}</h3>
 
-                <div className="flex flex-1 flex-col pt-2.5 lg:pt-0">
-                  <h3 className="text-lg font-bold text-dark lg:mt-6">{s.title}</h3>
-
-                  {s.pill && (
-                    <span className="mt-3 self-start rounded-full bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
-                      {s.pill}
+                  {s.showDeadline && (
+                    <span className="mt-3 self-start rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">
+                      до {timeline.applicationDeadline}
                     </span>
                   )}
 
@@ -206,66 +314,31 @@ function Selection() {
                   )}
 
                   {s.subtitle && (
-                    <>
-                      <p className="mt-2 text-sm text-dark/60">{s.subtitle}:</p>
-
-                      {/* мобильная версия: список под шагом */}
-                      <ul className="mt-3 space-y-2 lg:hidden">
-                        {evaluated.map((e, k) => (
-                          <li
-                            key={e}
-                            className="flex gap-3 rounded-xl bg-primary/5 px-3 py-2.5 text-sm text-dark"
-                          >
-                            <span className="shrink-0 text-xs font-semibold tabular-nums text-primary/40">
-                              {String(k + 1).padStart(2, '0')}
-                            </span>
-                            {e}
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* десктоп: ствол ветки */}
-                      <span aria-hidden className="mx-auto mt-4 hidden w-px flex-1 bg-primary/20 lg:block" />
-                    </>
-                  )}
-
-                  {i === last && (
-                    <a 
-                      href="#application-form"
-                      className="mt-5 inline-block self-start rounded-full bg-accent px-6 py-3 font-semibold text-white transition hover:scale-105"
-                    >
-                      Подать заявку
-                    </a>
+                    <CriteriaDropdown
+                      label={s.subtitle}
+                      items={evaluated}
+                      open={criteriaOpen}
+                      setOpen={setCriteriaOpen}
+                    />
                   )}
                 </div>
               </li>
-            ))}
-          </ol>
-
-          {/* десктоп: ветка + 6 критериев (3×2) под колонками 2–4 */}
-          <div className="relative hidden pt-10 lg:col-span-3 lg:col-start-2 lg:grid lg:grid-cols-3 lg:gap-6">
-            <span aria-hidden className="absolute top-0 h-5 w-px bg-primary/20" style={{ left: branchInset }} />
-            <span
-              aria-hidden
-              className="absolute top-5 h-px bg-primary/20"
-              style={{ left: branchInset, right: branchInset }}
-            />
-
-            {evaluated.map((e, k) => (
-              <div
-                key={e}
-                className="relative rounded-2xl bg-primary/5 p-5 transition-colors duration-300 hover:bg-primary/10"
-              >
-                {k < 3 && <span aria-hidden className="absolute -top-5 left-1/2 h-5 w-px bg-primary/20" />}
-                <span className="block text-xs font-semibold tabular-nums text-primary/40">
-                  {String(k + 1).padStart(2, '0')}
-                </span>
-                <p className="mt-2 text-sm font-medium text-dark">{e}</p>
-              </div>
-            ))}
-          </div>
+            )
+          })}
+        </ol>
+        {/* CTA по центру последней колонки */}
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <a 
+            href="#application-form"
+            className={`justify-self-center rounded-full bg-accent px-6 py-3 font-semibold text-white transition hover:scale-105 sm:col-start-2 lg:col-start-4 ${
+              on ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+            }`}
+            style={{ transitionDelay: on ? `${(last + 1) * STEP}s` : '0s', transitionDuration: '500ms' }}
+          >
+            Заполнить заявку
+          </a>
         </div>
-      </Reveal>
+      </div>
     </section>
   )
 }

@@ -1,0 +1,13 @@
+[
+  { "label": "Главная", "href": "#top", "placement": [] },
+  { "label": "Для кого", "href": "#for-whom", "placement": ["header", "footer"] },
+  { "label": "Что получите", "href": "#what-you-get", "placement": ["header", "footer"] },
+  { "label": "Программа", "href": "#short-about", "placement": ["header", "footer"] },
+  { "label": "Как устроен акселератор", "href": "#program", "placement": [] },
+  { "label": "Эксперты", "href": "#speakers", "placement": ["header", "footer"] },
+  { "label": "Подходит ли вам", "href": "#criteria", "placement": ["footer"] },
+  { "label": "Как попасть", "href": "#selection", "placement": [] },
+  { "label": "Организаторы и партнёры", "href": "#organizers", "placement": [] },
+  { "label": "FAQ", "href": "#faq", "placement": ["header", "footer"] },
+  { "label": "Подать заявку", "href": "#application-form", "placement": [] }
+]

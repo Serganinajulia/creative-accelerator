@@ -62,7 +62,7 @@ export default function Speakers() {
   }
 
   return (
-    <section id="speakers" className="mx-auto max-w-7xl px-6 py-20">
+    <section id="speakers" className="mx-auto max-w-7xl px-6 pt-20 md:pt-28">
       <Reveal>
         <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
           <SectionHeading>
