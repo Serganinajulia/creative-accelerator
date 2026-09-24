@@ -22,7 +22,7 @@ function SpotlightCard({ title, description }: { title: string; description: str
       onMouseMove={handleMove}
       className="relative overflow-hidden rounded-3xl bg-primary text-white p-6 min-h-[180px]"
       style={{
-        backgroundImage: `radial-gradient(300px circle at ${pos.x}% ${pos.y}%, rgba(232,43,42,0.35), transparent 70%)`,
+        backgroundImage: `radial-gradient(300px circle at ${pos.x}% ${pos.y}%, rgba(229,44,43,0.35), transparent 70%)`,
       }}
     >
       <h3 className="font-bold text-lg mb-2">{title}</h3>

@@ -60,7 +60,7 @@ export default function Hero() {
       >
         <g transform="rotate(-16 1166 590)">
           <ellipse cx="1166" cy="590" rx="620" ry="190" fill="none" stroke="white" strokeOpacity="0.12" />
-          <circle r="7" fill="#E82B2A">
+          <circle r="7" fill="#E52C2B">
             <animateMotion dur="22s" repeatCount="indefinite" path={ORBIT_PATH} />
           </circle>
           <circle r="4" fill="white" fillOpacity="0.8">
@@ -116,7 +116,7 @@ export default function Hero() {
         style={{ y: graphicY }}
         className="pointer-events-none absolute max-w-none [--hero-w:calc(74vw_+_200px)] lg:[--hero-w:max(820px,64vw)] w-[var(--hero-w)] right-[calc(var(--hero-w)*-0.2)] bottom-[calc(var(--hero-w)*-0.15)]">        <motion.div
           aria-hidden
-          className="absolute inset-[15%] rounded-full bg-[radial-gradient(circle,#E82B2A_0%,transparent_70%)] opacity-40 blur-3xl"
+          className="absolute inset-[15%] rounded-full bg-[radial-gradient(circle,#E52C2B_0%,transparent_70%)] opacity-40 blur-3xl"
           animate={reduce ? undefined : { scale: [1, 1.15, 1], opacity: [0.35, 0.55, 0.35] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -188,7 +188,7 @@ function RollingSpheres() {
         {/* объём: блик сверху-слева, тень к краю */}
         <radialGradient id="sphere-red" cx="35%" cy="35%" r="65%">
           <stop offset="0%" stopColor="#FFB3B3" />
-          <stop offset="45%" stopColor="#E82B2A" />
+          <stop offset="45%" stopColor="#E52C2B" />
           <stop offset="100%" stopColor="#7A0F0F" />
         </radialGradient>
         <radialGradient id="sphere-blue" cx="35%" cy="35%" r="65%">

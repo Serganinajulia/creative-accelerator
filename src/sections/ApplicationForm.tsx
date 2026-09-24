@@ -206,7 +206,7 @@ export default function ApplicationForm() {
   return (
     <section id="application-form" className="mx-auto max-w-6xl px-4 pb-20 md:pb-28 md:px-6">
       <Reveal>
-        <div className="relative overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#1B428F_0%,#1B428F_40%,#E82B2A_100%)] p-6 text-white md:rounded-[48px] md:p-12 lg:p-16">
+        <div className="relative overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#012D94_0%,#012D94_40%,#E52C2B_100%)] p-6 text-white md:rounded-[48px] md:p-12 lg:p-16">
           <Decor />
 
           {status === 'success' ? (
@@ -543,7 +543,7 @@ function Decor() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0">
       <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-[#798FB5]/30 blur-3xl" />
-      <div className="absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-[#E82B2A]/50 blur-3xl" />
+      <div className="absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-[#E52C2B]/50 blur-3xl" />
       <svg className="absolute -right-40 -top-40 h-[36rem] w-[36rem] text-white/15" viewBox="0 0 400 400" fill="none">
         <ellipse cx="200" cy="200" rx="190" ry="70" stroke="currentColor" transform="rotate(-25 200 200)" />
         <ellipse cx="200" cy="200" rx="150" ry="150" stroke="currentColor" />
