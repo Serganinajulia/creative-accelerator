@@ -513,11 +513,12 @@ function SuccessState({ onReset }: { onReset: () => void }) {
       <div className="mx-auto mb-8 grid h-20 w-20 place-items-center rounded-full bg-white">
         <CheckIcon className="h-10 w-10 text-primary" />
       </div>
-      <h2 className="text-4xl font-extrabold uppercase leading-[0.95] tracking-tight md:text-6xl">
-        Заявка <span className="font-light">(</span>отправлена<span className="font-light">)</span>
-      </h2>
+      <SectionHeading className="text-white">
+        Заявка <span className="bracket-word bracket-word--white">отправлена</span>
+      </SectionHeading>
       <p className="mt-6 text-white/80">
-        Результаты отбора пришлём на почту после 15 октября. Если понадобятся уточнения — позвоним.
+        После завершения приёма заявок команда программы проведёт отбор и свяжется с участниками, которые
+        прошли конкурсный отбор. Подтверждение мы отправили вам на почту.
       </p>
       <button
         type="button"
@@ -542,7 +543,7 @@ function CheckIcon({ className = '' }: { className?: string }) {
 function Decor() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0">
-      <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-[#798FB5]/30 blur-3xl" />
+      <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-[#7F9CE3]/30 blur-3xl" />
       <div className="absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-[#E52C2B]/50 blur-3xl" />
       <svg className="absolute -right-40 -top-40 h-[36rem] w-[36rem] text-white/15" viewBox="0 0 400 400" fill="none">
         <ellipse cx="200" cy="200" rx="190" ry="70" stroke="currentColor" transform="rotate(-25 200 200)" />

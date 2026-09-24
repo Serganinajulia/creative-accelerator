@@ -119,11 +119,11 @@ export default function ForWhom() {
           </div>
 
         </div>
-                {/* приоритет при отборе */}
+        {/* приоритет при отборе */}
         <Reveal delay={0.1}>
-          <div className="mt-12 flex items-start gap-4 rounded-2xl bg-primary p-6 text-white md:mt-16 md:items-center md:p-8">
-            <img src="/assets/general/mark.svg" alt="" className="mt-1 h-6 w-6 shrink-0 brightness-0 invert md:mt-0" />
-            <p className="text-lg font-semibold leading-snug md:text-xl">{texts.forWhom.priority}</p>
+          <div className="mt-12 flex items-start gap-4 rounded-2xl border border-primary/15 bg-primary/5 p-6 md:mt-16 md:items-center md:p-8">
+            <img src="/assets/general/mark.svg" alt="" className="mt-1 h-6 w-6 shrink-0 md:mt-0" />
+            <p className="text-lg font-semibold leading-snug text-primary md:text-xl">{texts.forWhom.priority}</p>
           </div>
         </Reveal>
       </div>

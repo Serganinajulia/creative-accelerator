@@ -3,7 +3,7 @@
 @theme {
   --color-primary: #012d94;   /* основной синий */
   --color-accent: #e52c2b;    /* акцентный красный */
-  --color-secondary: #798fb5; /* вторичный синий */
+  --color-secondary: #7f9ce3; /* вторичный синий */
   --color-dark: #393939;
   --color-black: #000000;
   --color-white: #ffffff;
@@ -106,3 +106,14 @@ body {
     border-top: none;
     border-radius: 0 0 0.5em 0.5em;
   }
+
+  /* обводка фокуса — только при навигации с клавиатуры, не после клика мышью */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

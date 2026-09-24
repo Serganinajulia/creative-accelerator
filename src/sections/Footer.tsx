@@ -15,7 +15,7 @@ const sepTop = 'border-t border-white/15 pt-10 md:border-t-0 md:pt-0'
 
 export default function Footer() {
   const f = texts.footer
-  const logos = partners.organizers.items
+  const fki = partners.organizers.items.find((p) => p.name === 'Федерация креативных индустрий')
   const label = 'mb-4 text-xs font-semibold uppercase tracking-wide text-white/50'
 
   return (
@@ -23,7 +23,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
         {/* row 1 */}
         <div className={`grid gap-10 md:gap-12 ${cols}`}>
-          {/* col 1: логотип, описание, партнёры */}
+          {/* col 1: логотип акселератора, под ним логотип ФКИ */}
           <div className={narrow}>
             <a href="#top" aria-label="Наверх" className="inline-block">
               <img
@@ -32,23 +32,19 @@ export default function Footer() {
                 className="h-14 w-auto md:h-16"
               />
             </a>
-            <p className="mt-4 text-white/80">{f.tagline}</p>
 
-            <p className={`${label} mt-10`}>Организаторы и партнёры</p>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-6">
-              {logos.map((p) => (
-                <a 
-                  key={p.name}
-                  href={p.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={p.name}
-                  className="transition hover:opacity-80"
-                >
-                  <img src={p.logo} alt={p.name} className="h-9 w-auto" />
-                </a>
-              ))}
-            </div>
+            {fki && (
+              <a 
+                href={fki.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={fki.name}
+                className="mt-8 inline-block transition hover:opacity-80"
+              >
+                <img src={fki.logo} alt={fki.name} className="h-12 w-auto" />
+              </a>
+            )}
+            <p className="mt-4 text-white/80">{f.tagline}</p>
           </div>
 
           {/* col 2: навигация; разделитель сверху на мобиле, слева на десктопе */}

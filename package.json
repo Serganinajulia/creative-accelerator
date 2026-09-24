@@ -10,19 +10,20 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "framer-motion": "^11.11.0",
-    "lenis": "^1.1.14"
+    "lenis": "^1.1.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^26.6.2",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.2",
-    "typescript": "^5.6.2",
-    "vite": "^5.4.8",
+    "eslint": "^9.11.1",
     "tailwindcss": "^4.0.0",
-    "@tailwindcss/vite": "^4.0.0",
-    "eslint": "^9.11.1"
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8"
   }
 }

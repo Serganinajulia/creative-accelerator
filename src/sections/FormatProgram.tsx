@@ -91,7 +91,7 @@ export default function FormatProgram() {
       <div className="mx-auto max-w-7xl px-6 text-center">
         <Reveal>
           <SectionHeading light className="mb-4">
-            Формат участия и календарь
+          Формат участия и этапы
           </SectionHeading>
         </Reveal>
 

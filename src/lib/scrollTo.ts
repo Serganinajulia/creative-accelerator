@@ -35,6 +35,7 @@ export function initAnchorScroll() {
     const href = link.getAttribute('href')
     if (!href || href === '#') return
     e.preventDefault()
+    link.blur()
     smoothScrollTo(href)
   }
   document.addEventListener('click', onClick)

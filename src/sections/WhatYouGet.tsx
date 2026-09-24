@@ -37,7 +37,6 @@ export default function WhatYouGet() {
       <Reveal>
         <SectionHeading className="mb-8">{texts.whatYouGet.title}</SectionHeading>
       </Reveal>
-      {/* 4 карточки: 2×2 на планшете, в ряд на десктопе */}
       <div className="grid gap-4 grid-cols-2">
         {texts.whatYouGet.items.map((item, i) => (
           <Reveal key={item.title + i} delay={i * 0.08}>

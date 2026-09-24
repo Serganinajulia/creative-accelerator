@@ -122,7 +122,7 @@ export default function Hero() {
         />
         <motion.div
           aria-hidden
-          className="absolute inset-[25%] -translate-x-1/4 rounded-full bg-[radial-gradient(circle,#798FB5_0%,transparent_70%)] opacity-40 blur-3xl"
+          className="absolute inset-[25%] -translate-x-1/4 rounded-full bg-[radial-gradient(circle,#7F9CE3_0%,transparent_70%)] opacity-40 blur-3xl"
           animate={reduce ? undefined : { scale: [1.1, 0.95, 1.1] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />

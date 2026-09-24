@@ -13,6 +13,7 @@ import OrganizersPartners from './sections/OrganizersPartners'
 import Faq from './sections/Faq'
 import ApplicationForm from './sections/ApplicationForm'
 import Footer from './sections/Footer'
+import CookieBanner from './components/CookieBanner'
 
 export default function App() {
   useSmoothScroll()
@@ -34,6 +35,7 @@ export default function App() {
         <ApplicationForm />
       </main>
       <Footer />
+      <CookieBanner />
     </>
   )
 }

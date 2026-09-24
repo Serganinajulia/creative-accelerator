@@ -55,6 +55,7 @@ export default function Header() {
 
   const onNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
+    e.currentTarget.blur()
     setOpen(false)
     goTo(href)
   }
