@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import data from '../data/formatProgram.json'
+import data from '../data/timelineProgram.json'
 import Reveal from '../components/Reveal'
 import SectionHeading from '../components/SectionHeading'
 

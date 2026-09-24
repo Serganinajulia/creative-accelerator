@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import texts from '../data/texts.json'
-import format from '../data/formatProgram.json'
+import format from '../data/timelineProgram.json'
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null)
