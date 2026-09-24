@@ -1,0 +1,37 @@
+[
+  {
+    "id": "speaker-1",
+    "name": "Иванова Анна",
+    "description": "Трекер ФРИИ, 8 лет в запуске креативных стартапов",
+    "photo": "/assets/speakers/test.png",
+    "roles": ["speaker", "tracker"]
+  },
+  {
+    "id": "speaker-2",
+    "name": "Имя Фамилия",
+    "description": "Должность / компания / короткая специализация в пару строк",
+    "photo": "/assets/speakers/test1.png",
+    "roles": ["speaker"]
+  },
+  {
+    "id": "speaker-3",
+    "name": "Имя Фамилия",
+    "description": "Должность / компания / короткая специализация в пару строк",
+    "photo": "/assets/speakers/test1.png",
+    "roles": ["speaker"]
+  },
+  {
+    "id": "speaker-4",
+    "name": "Иванова Анна",
+    "description": "Трекер ФРИИ, 8 лет в запуске креативных стартапов",
+    "photo": "/assets/speakers/test.png",
+    "roles": ["speaker", "tracker"]
+  },
+  {
+    "id": "speaker-5",
+    "name": "Иванова Анна",
+    "description": "Трекер ФРИИ, 8 лет в запуске креативных стартапов",
+    "photo": "/assets/speakers/test.png",
+    "roles": ["tracker"]
+  }
+]

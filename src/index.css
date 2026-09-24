@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1b428f;   /* основной синий */
+  --color-accent: #e82b2a;    /* акцентный красный */
+  --color-secondary: #798fb5; /* вторичный синий */
+  --color-dark: #393939;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --font-sans: 'Montserrat', sans-serif;
+  --color-surface: #f4f5f7;   /* светло-серый фон секций */
+  
+}
+
+html {
+  scroll-behavior: auto; /* плавный скролл берёт на себя Lenis, а не CSS */
+}
+
+body {
+  @apply bg-white text-dark font-sans text-base;
+}
+
+.input {
+  @apply w-full rounded-lg border border-dark/20 px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors;
+}
+/* ===== Фирменные заголовки блоков ===== */
+.heading-brand {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(1.5rem, 1rem + 2.8vw, 3rem); /* ~24px -> 48px */
+}
+  
+  /* ===== Скобки-рамка (акцентные врезки) =====
+   Уголки сверху и снизу без боковых линий. Цвет скобок задаётся
+   отдельно от цвета текста через модификатор (--bracket-frame-*),
+   чтобы можно было, например, дать синий заголовок и красные скобки. */
+.bracket-frame {
+  position: relative;
+  padding: 2rem 1.75rem;
+  --bracket-color: var(--color-primary);
+}
+.bracket-frame--accent {
+  --bracket-color: var(--color-accent);
+}
+.bracket-frame--white {
+  --bracket-color: var(--color-white);
+}
+.bracket-frame::before,
+.bracket-frame::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5rem;
+  border: 1px solid var(--bracket-color);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.bracket-frame::before {
+  top: 0;
+  border-bottom: none;
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+.bracket-frame::after {
+  bottom: 0;
+  border-top: none;
+  border-radius: 0 0 1.5rem 1.5rem;
+}
+
+/* ===== Скобки вокруг одного слова внутри заголовка =====
+   В отличие от .bracket-frame (блочная, под весь заголовок),
+   эта — инлайновая, обтекает конкретное слово/фразу и масштабируется
+   вместе с текстом (размеры в em). */
+   .bracket-word {
+    position: relative;
+    display: inline-block;
+    padding: 0.1em 0.3em 0.2em;
+    --bracket-color: var(--color-primary);
+  }
+  .bracket-word--accent {
+    --bracket-color: var(--color-accent);
+  }
+  .bracket-word--white {
+    --bracket-color: var(--color-white);
+  }
+  .bracket-word::before,
+  .bracket-word::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 0.3em;
+    border: 1px solid var(--bracket-color);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .bracket-word::before {
+    top: 0;
+    border-bottom: none;
+    border-radius: 0.5em 0.5em 0 0;
+  }
+  .bracket-word::after {
+    bottom: 0;
+    border-top: none;
+    border-radius: 0 0 0.5em 0.5em;
+  }

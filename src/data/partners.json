@@ -1,0 +1,20 @@
+{
+  "organizers": [
+    { "name": "Национальные проекты России", "logo": "/assets/partners/nacproekty.png", "url": "https://экономика.рф", "placement": ["header", "footer"] },
+    { "name": "МИНИНВЕСТ", "logo": "/assets/partners/mininvest.png", "url": "#", "placement": ["header", "footer"] },
+    { "name": "Мой бизнес", "logo": "/assets/partners/moybiznes.png", "url": "#", "placement": ["header", "footer"] },
+    { "name": "Федерация креативных индустрий", "logo": "/assets/partners/fki.png", "url": "#", "placement": ["header", "footer"] }
+  ],
+  "projectPartners": [
+    { "name": "Опора России", "logo": "/src/assets/partners/opora.svg", "url": "https://opora.ru/", "placement": ["organizers-block"] }
+  ],
+  "infoPartners": [
+    { "name": "Telegram-канал ФКИ", "logo": "/src/assets/partners/tg-fki.svg", "url": "https://t.me/redbuttonCIF", "placement": ["organizers-block"] }
+  ],
+  "infoResources": [
+    { "name": "Инвестиционный портал Подмосковья", "logo": "/src/assets/partners/invest-mosreg.svg", "url": "https://invest.mosreg.ru/", "placement": ["organizers-block"] },
+    { "name": "МСП.РФ", "logo": "/src/assets/partners/msp-rf.svg", "url": "https://мсп.рф/", "placement": ["organizers-block"] },
+    { "name": "Telegram: субсидии МО", "logo": "/src/assets/partners/tg-subsidii.svg", "url": "https://t.me/sybsidiiMO", "placement": ["organizers-block"] },
+    { "name": "Telegram: Мой бизнес МО", "logo": "/src/assets/partners/tg-mybusiness.svg", "url": "https://t.me/mybusinessmo", "placement": ["organizers-block"] }
+  ]
+}
