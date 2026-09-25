@@ -59,7 +59,7 @@ export default function ForWhom() {
   const row4 = allIndustries.slice(chunkSize * 3)
 
   return (
-    <section id="for-whom" className="pt-20 md:pt-28 bg-white text-dark overflow-hidden">
+    <section id="for-whom" className="py-15 md:py-20 bg-white text-dark overflow-hidden">
       <div className="mx-auto max-w-7xl px-6">
         {/* Разделение на 2 равные колонки (50/50) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -119,13 +119,6 @@ export default function ForWhom() {
           </div>
 
         </div>
-        {/* приоритет при отборе */}
-        <Reveal delay={0.1}>
-          <div className="mt-12 flex items-start gap-4 rounded-2xl border border-primary/15 bg-primary/5 p-6 md:mt-16 md:items-center md:p-8">
-            <img src="/assets/general/mark.svg" alt="" className="mt-1 h-6 w-6 shrink-0 md:mt-0" />
-            <p className="text-lg font-semibold leading-snug text-primary md:text-xl">{texts.forWhom.priority}</p>
-          </div>
-        </Reveal>
       </div>
     </section>
   )

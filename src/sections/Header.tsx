@@ -20,14 +20,23 @@ function goTo(href: string) {
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const [pastHero, setPastHero] = useState(false)
   const [open, setOpen] = useState(false)
 
-  // шапка становится белой после начала скролла
+  // шапка становится белой после начала скролла,
+  // кнопка «Подать заявку» появляется, когда первый экран (со своей кнопкой) почти ушёл
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40)
+      setPastHero(window.scrollY > window.innerHeight * 0.8)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
   // пока меню открыто: страница не скроллится, Esc закрывает
@@ -52,6 +61,7 @@ export default function Header() {
   }, [])
 
   const solid = scrolled && !open // белая шапка с тёмными элементами
+  const showCta = pastHero && !open
 
   const onNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
@@ -66,17 +76,22 @@ export default function Header() {
         solid ? 'bg-white/95 shadow-sm backdrop-blur' : 'bg-transparent'
       }`}
     >
-      <div className="relative z-10 mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
-        <a href="#top" onClick={(e) => onNavClick(e, '#top')} aria-label="Креативная среда. Акселератор — наверх">
+      <div className="relative z-10 mx-auto flex max-w-7xl items-center px-4 py-4 sm:px-6">
+        <a
+          href="#top"
+          onClick={(e) => onNavClick(e, '#top')}
+          aria-label="Креативная среда. Акселератор — наверх"
+          className="shrink-0"
+        >
           <Logo
             className={`h-8 w-auto transition-colors duration-300 ${solid ? 'text-dark' : 'text-white'}`}
           />
         </a>
 
-        {/* десктоп-навигация */}
-        <nav aria-label="Основная навигация" className="hidden items-center gap-6 font-medium lg:flex">
+        {/* десктоп-навигация: прижата вправо; когда появляется кнопка, плавно отъезжает влево */}
+        <nav aria-label="Основная навигация" className="ml-auto hidden items-center gap-6 font-medium lg:flex">
           {headerNav.map((l) => (
-            <a 
+            <a
               key={l.href}
               href={l.href}
               className={`transition-colors ${
@@ -90,16 +105,29 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <a
-            href="#application-form"
-            className={`rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 sm:px-5 sm:text-base ${
-              open ? 'pointer-events-none opacity-0' : 'opacity-100'
+        <div className="ml-auto flex shrink-0 items-center lg:ml-0">
+          {/* кнопка раскрывается по ширине: 0 → своя ширина, соседи сдвигаются плавно */}
+          <div
+            className={`grid transition-[grid-template-columns] duration-500 ease-out ${
+              showCta ? 'grid-cols-[1fr]' : 'grid-cols-[0fr]'
             }`}
           >
-            Подать заявку
-          </a>
-          <BurgerButton open={open} dark={solid} onClick={() => setOpen((o) => !o)} />
+            <div className="overflow-hidden lg:pl-6">
+              <a
+                href="#application-form"
+                tabIndex={showCta ? 0 : -1}
+                aria-hidden={!showCta}
+                className={`block whitespace-nowrap rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity duration-300 hover:opacity-90 sm:px-5 sm:text-base ${
+                  showCta ? 'opacity-100' : 'pointer-events-none opacity-0'
+                }`}
+              >
+                Подать заявку
+              </a>
+            </div>
+          </div>
+          <div className="ml-3 lg:ml-0">
+            <BurgerButton open={open} dark={solid} onClick={() => setOpen((o) => !o)} />
+          </div>
         </div>
       </div>
 
@@ -119,7 +147,7 @@ function BurgerButton({ open, dark, onClick }: { open: boolean; dark: boolean; o
       aria-label={open ? 'Закрыть меню' : 'Открыть меню'}
       aria-expanded={open}
       aria-controls="mobile-menu"
-      className={`group grid h-11 w-11 place-items-center rounded-full border transition-colors duration-300 lg:hidden ${
+      className={`group grid h-11 w-11 shrink-0 place-items-center rounded-full border transition-colors duration-300 lg:hidden ${
         dark ? 'border-dark/15 hover:border-dark/40' : 'border-white/30 hover:border-white/70'
       }`}
     >
@@ -204,7 +232,7 @@ function MobileMenu({
           transition={{ duration: 0.5, ease: EASE, delay: 0.55 }}
           className="mt-auto space-y-5 border-t border-white/15 pt-6"
         >
-          <a 
+          <a
             href="#application-form"
             onClick={(e) => onNavClick(e, '#application-form')}
             className="flex w-full items-center justify-center gap-3 rounded-full bg-accent px-7 py-4 font-bold"

@@ -86,13 +86,13 @@ export default function FormatProgram() {
   return (
     <section
       id="program"
-      className="relative overflow-hidden py-20 md:py-28 bg-gradient-to-br from-primary via-primary to-black"
+      className="relative overflow-hidden py-15 md:py-20 bg-gradient-to-br from-primary via-primary to-black"
     >
       <div className="mx-auto max-w-7xl px-6 text-center">
         <Reveal>
-          <SectionHeading light className="mb-4">
-          Формат участия и этапы
-          </SectionHeading>
+        <SectionHeading light align="center" className="mb-4">
+          {data.title}
+        </SectionHeading>
         </Reveal>
 
         <Reveal delay={0.05}>

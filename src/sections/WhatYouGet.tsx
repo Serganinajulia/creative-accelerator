@@ -33,11 +33,11 @@ function SpotlightCard({ title, description }: { title: string; description: str
 
 export default function WhatYouGet() {
   return (
-    <section id="what-you-get" className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+    <section id="what-you-get" className="mx-auto max-w-7xl px-6 pt-10 md:pt-15">
       <Reveal>
         <SectionHeading className="mb-8">{texts.whatYouGet.title}</SectionHeading>
       </Reveal>
-      <div className="grid gap-4 grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         {texts.whatYouGet.items.map((item, i) => (
           <Reveal key={item.title + i} delay={i * 0.08}>
             <SpotlightCard title={item.title} description={item.description} />

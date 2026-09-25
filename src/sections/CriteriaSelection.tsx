@@ -36,12 +36,11 @@ function CriteriaQuiz() {
     setChecked((prev) => prev.map((v, j) => (j === i ? !v : v)))
 
   return (
-    <section id="criteria" className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+    <section id="criteria" className="mx-auto max-w-7xl px-6 py-15 md:py-20">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
         {/* левая колонка: заголовок + прогресс */}
         <Reveal>
-          <SectionHeading>{title}</SectionHeading>
-          <p className="mt-4 text-dark/60">Отметьте пункты, которые про вас</p>
+          <SectionHeading description="Отметьте пункты, которые про вас">{title}</SectionHeading>
 
           <div className="mt-8">
             <div className="flex items-baseline justify-between text-sm">
@@ -58,7 +57,7 @@ function CriteriaQuiz() {
             </div>
           </div>
 
-          <div aria-live="polite" className="mt-6 min-h-[5.5rem]">
+          <div aria-live="polite" className="mt-6 empty:hidden lg:min-h-[5.5rem] lg:empty:block">
             {all ? (
               <div className="flex items-center justify-between gap-4 rounded-2xl bg-primary p-5 text-white">
                 <div>
@@ -253,7 +252,7 @@ function Selection() {
 
   return (
     <section id="selection" className=" bg-surface">
-      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-6 py-15 md:py-20">
         <Reveal>
           <SectionHeading>
             <span className="bracket-word bracket-word--accent">{titleAccent}</span> {title}

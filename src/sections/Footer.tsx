@@ -20,7 +20,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-primary text-white">
-      <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+      <div className="mx-auto max-w-7xl px-6 py-15 md:py-20">
         {/* row 1 */}
         <div className={`grid gap-10 md:gap-12 ${cols}`}>
           {/* col 1: логотип акселератора, под ним логотип ФКИ */}

@@ -1,17 +1,21 @@
 {
+  "section": {
+    "title": "Организаторы и партнёры",
+    "description": "Центр «Мой Бизнес» Московской области при поддержке Федерации креативных индустрий"
+  },
   "organizers": {
-    "title": "Центр «Мой Бизнес» Московской области при поддержке Федерации креативных индустрий",
+    "title": "Организаторы",
     "items": [
-      { "name": "Мой бизнес", "logo": "public/assets/partners/moybiznes.png", "url": "https://xn--90aifddrld7a.xn--p1ai/" },
-      { "name": "Федерация креативных индустрий", "logo": "public/assets/partners/fki.png", "url": "https://www.creative-russia.ru/" },
-      { "name": "Национальные проекты России", "logo": "public/assets/partners/nacproekty.png", "url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/" },
-      { "name": "МИНИНВЕСТ", "logo": "public/assets/partners/mininvest.png", "url": "https://mii.mosreg.ru/" }
+      { "name": "Национальные проекты России", "logo": "/assets/partners/nacproekty.png", "url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/", "height": 88 },
+      { "name": "МИНИНВЕСТ", "logo": "/assets/partners/mininvest.png", "url": "https://mii.mosreg.ru/", "height": 100 },
+      { "name": "Мой бизнес", "logo": "/assets/partners/moybiznes.png", "url": "https://xn--90aifddrld7a.xn--p1ai/", "height": 76 },
+      { "name": "Федерация креативных индустрий", "logo": "/assets/partners/fki.png", "url": "https://www.creative-russia.ru/", "height": 36 }
     ]
   },
   "infoPartners": {
     "title": "Информационная поддержка",
     "items": [
-      { "name": "Telegram-канал ФКИ", "logo": "public/assets/partners/red-button.svg", "url": "https://t.me/redbuttonCIF" }
+      { "name": "Telegram-канал ФКИ «Красная кнопка»", "logo": "/assets/partners/red-button.svg", "url": "https://t.me/redbuttonCIF", "height": 52, "caption": "Информационный партнёр" }
     ]
   }
 }

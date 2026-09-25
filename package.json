@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npm run build && rsync -avz --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r --exclude '.well-known' dist/ u3212080@server287.hosting.reg.ru:www/creative-accelerator.ru/"
   },
   "dependencies": {
     "framer-motion": "^11.11.0",

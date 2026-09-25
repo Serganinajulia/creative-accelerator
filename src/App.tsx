@@ -24,9 +24,9 @@ export default function App() {
       <Header />
       <main>
         <Hero />
-        <ForWhom />
-        <WhatYouGet />
         <ShortAbout />
+        <WhatYouGet />
+        <ForWhom />
         <FormatProgram />
         <Speakers />
         <CriteriaSelection />

@@ -62,15 +62,12 @@ export default function Speakers() {
   }
 
   return (
-    <section id="speakers" className="mx-auto max-w-7xl px-6 pt-20 md:pt-28">
+    <section id="speakers" className="mx-auto max-w-7xl px-6 pt-15 md:pt-20">
       <Reveal>
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading>
-            Эксперты и{' '}
-            <span className="bracket-word bracket-word--accent">трекеры</span>
-          </SectionHeading>
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeading wordVariant="accent">{'Эксперты и {трекеры}'}</SectionHeading>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3 sm:justify-between lg:justify-end">
             {/* табы-пилюли */}
             <div className="flex gap-2">
               {TABS.map((t) => (
@@ -90,8 +87,8 @@ export default function Speakers() {
               ))}
             </div>
 
-            {/* стрелки */}
-            <div className="flex gap-2">
+            {/* стрелки — от sm, на телефоне листаем свайпом */}
+            <div className="hidden shrink-0 gap-2 sm:flex">
               <ArrowButton dir={-1} disabled={!edges.prev} onClick={() => scrollByCard(-1)} />
               <ArrowButton dir={1} disabled={!edges.next} onClick={() => scrollByCard(1)} />
             </div>
@@ -102,7 +99,7 @@ export default function Speakers() {
       <div
         ref={trackRef}
         onScroll={updateEdges}
-        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pt-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {people.map((p) => (
           <article

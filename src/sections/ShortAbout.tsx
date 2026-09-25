@@ -79,7 +79,7 @@ export default function ShortAbout() {
   const s = texts.shortAbout
 
   return (
-    <section id="short-about" className="bg-surface py-20 md:py-28">
+    <section id="short-about" className="bg-surface py-15 md:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <SectionHeading className="mb-8">

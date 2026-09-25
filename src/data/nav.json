@@ -1,8 +1,8 @@
 [
   { "label": "Главная", "href": "#top", "placement": [] },
-  { "label": "Для кого", "href": "#for-whom", "placement": ["header", "footer"] },
+  { "label": "Об акселераторе", "href": "#short-about", "placement": ["header", "footer"] },
   { "label": "Что получите", "href": "#what-you-get", "placement": ["header", "footer"] },
-  { "label": "Программа", "href": "#short-about", "placement": ["header", "footer"] },
+  { "label": "Для кого", "href": "#for-whom", "placement": ["header", "footer"] },
   { "label": "Этапы", "href": "#program", "placement": ["header", "footer"] },
   { "label": "Эксперты", "href": "#speakers", "placement": ["header", "footer"] },
   { "label": "Подходит ли вам", "href": "#criteria", "placement": ["footer"] },

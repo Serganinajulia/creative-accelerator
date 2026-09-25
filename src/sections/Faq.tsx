@@ -8,7 +8,7 @@ export default function Faq() {
   const { title, titleAccent, items } = texts.faq
 
   return (
-    <section id="faq" className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+    <section id="faq" className="mx-auto max-w-7xl px-6 py-15 md:py-20">
       <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
         {/* заголовок остаётся на месте, пока листается список */}
         <div className="self-start lg:sticky lg:top-28">

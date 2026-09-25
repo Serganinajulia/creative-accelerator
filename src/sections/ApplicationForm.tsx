@@ -2,12 +2,14 @@ import { useState, type ReactNode } from 'react'
 import Reveal from '../components/Reveal'
 import SectionHeading from '../components/SectionHeading'
 import timeline from '../data/timelineProgram.json'
+import copy from '../data/applicationForm.json'
 
 /**
  * Состав полей — ровно по официальному реестру участников
  * (Приложение №1 к Техническому заданию к Договору, форма АНО «АИР»).
  * В интерфейсе подписи переведены на человеческий язык, но ключи и
  * официальные названия колонок не меняются — см. REGISTRY_LABELS.
+ * Все тексты интерфейса — в data/applicationForm.json.
  * Отправка идёт на серверную функцию Яндекс.Облака → Google Таблицы.
  */
 type FormState = {
@@ -48,6 +50,8 @@ const initialState: FormState = {
 
 const FIELD_ORDER: Key[] = ['municipality', 'orgName', 'inn', 'address', 'fullName', 'phone', 'email', 'consent']
 
+const { fields: F, errors: E } = copy
+
 // слово ФИО: только кириллица, допускается дефис (Римская-Корсакова)
 const FIO_WORD_RE = /^[А-ЯЁа-яё]+(?:-[А-ЯЁа-яё]+)*$/
 const HAS_LATIN_RE = /[A-Za-z]/
@@ -56,19 +60,6 @@ const HAS_LATIN_RE = /[A-Za-z]/
 const EMAIL_RE = /^[^\s@]+@(?:[\p{L}\p{N}-]+\.)+[\p{L}\p{N}-]{2,}$/u
 
 const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT ?? ''
-
-/* ---------- ИНН: длина + контрольные цифры ФНС ---------- */
-
-function isValidInn(inn: string): boolean {
-  if (!/^(\d{10}|\d{12})$/.test(inn)) return false
-  const d = inn.split('').map(Number)
-  const check = (w: number[]) => (w.reduce((s, k, i) => s + k * d[i], 0) % 11) % 10
-  if (d.length === 10) return check([2, 4, 10, 3, 5, 9, 4, 6, 8]) === d[9]
-  return (
-    check([7, 2, 4, 10, 3, 5, 9, 4, 6, 8]) === d[10] &&
-    check([3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8]) === d[11]
-  )
-}
 
 /** 12 цифр = ИП, юридический адрес не нужен */
 const isSoleProprietor = (inn: string) => inn.length === 12
@@ -95,54 +86,42 @@ function formatPhone(d: string): string {
   return out
 }
 
-/* ---------- Валидация: тексты ошибок говорят, как исправить ---------- */
+/* ---------- Валидация: тексты ошибок — в applicationForm.json → errors ---------- */
 
 function validateField(key: Key, f: FormState): string | null {
   switch (key) {
     case 'municipality':
-      return f.municipality.trim().length < 2 ? 'Укажите город или район' : null
+      return f.municipality.trim().length < 2 ? E.municipality : null
 
     case 'orgName':
-      return f.orgName.trim().length < 2 ? 'Укажите название организации или ИП' : null
+      return f.orgName.trim().length < 2 ? E.orgName : null
 
     case 'inn':
-      return /^(\d{10}|\d{12})$/.test(f.inn) ? null : 'Укажите ИНН: 10 или 12 цифр'
+      return /^(\d{10}|\d{12})$/.test(f.inn) ? null : E.inn
 
     case 'address':
       if (isSoleProprietor(f.inn)) return null
-      return f.address.trim().length < 5 ? 'Укажите юридический адрес организации' : null
+      return f.address.trim().length < 5 ? E.address : null
 
     case 'fullName': {
       const value = f.fullName.trim()
-      if (!value) return 'Укажите ФИО представителя'
-      if (HAS_LATIN_RE.test(value)) return 'Укажите ФИО представителя: используйте кириллицу'
+      if (!value) return E.fullNameEmpty
+      if (HAS_LATIN_RE.test(value)) return E.fullNameLatin
       const words = value.split(/\s+/)
-      if (!words.every((w) => FIO_WORD_RE.test(w)))
-        return 'Укажите ФИО представителя: только буквы, без лишних символов'
-      if (words.length < 2)
-        return 'Укажите ФИО представителя: фамилию, имя и отчество (если есть)'
+      if (!words.every((w) => FIO_WORD_RE.test(w))) return E.fullNameChars
+      if (words.length < 2) return E.fullNameShort
       return null
     }
 
     case 'phone':
-      return /^8\d{10}$/.test(f.phone) ? null : 'Укажите номер телефона в формате 89000000000'
+      return /^8\d{10}$/.test(f.phone) ? null : E.phone
 
     case 'email':
-      return EMAIL_RE.test(f.email.trim()) ? null : 'Проверьте корректность email'
+      return EMAIL_RE.test(f.email.trim()) ? null : E.email
 
     case 'consent':
-      return f.consent ? null : 'Без согласия мы не можем принять заявку'
+      return f.consent ? null : E.consent
   }
-}
-
-/** Живая подсказка под ИНН, пока человек печатает */
-function innHint(inn: string): string {
-  if (!inn) return 'У компании 10 цифр, у ИП — 12'
-  if (inn.length < 10) return `Введено ${inn.length} из 10 (или 12 для ИП)`
-  if (inn.length === 10 && isValidInn(inn)) return 'Это компания (юрлицо) — ниже понадобится адрес'
-  if (inn.length === 11) return 'Для ИП — ещё одна цифра'
-  if (inn.length === 12 && isValidInn(inn)) return 'Это ИП — юридический адрес не нужен'
-  return 'У компании 10 цифр, у ИП — 12'
 }
 
 /* ======================================================================= */
@@ -204,9 +183,9 @@ export default function ApplicationForm() {
   }
 
   return (
-    <section id="application-form" className="mx-auto max-w-6xl px-4 pb-20 md:pb-28 md:px-6">
+    <section id="application-form" className="mx-auto max-w-6xl px-4 pb-15 md:pb-20 md:px-6">
       <Reveal>
-        <div className="relative overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#012D94_0%,#012D94_40%,#E52C2B_100%)] p-6 text-white md:rounded-[48px] md:p-12 lg:p-16">
+        <div className="relative overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#012D94_0%,#012D94_40%,#E52C2B_100%)] p-12 text-white md:rounded-[48px] lg:p-16">
           <Decor />
 
           {status === 'success' ? (
@@ -215,23 +194,26 @@ export default function ApplicationForm() {
             <div className="relative">
               {/* шапка: заголовок + подстрочник | шкала */}
               <div className="grid gap-8 lg:grid-cols-2 lg:items-end lg:gap-16">
-                <div>
-                  <SectionHeading className="text-white">
-                    Подать <span className="bracket-word">заявку</span>
-                  </SectionHeading>
-                  <p className="mt-5 max-w-md text-white/85">
-                    Для участия в акселераторе «Креативная среда» необходимо заполнить заявку{' '}
-                    <span className="inline-block whitespace-nowrap rounded-full bg-white px-3 py-0.5 text-sm font-semibold text-primary">
-                      до {timeline.applicationDeadline}
-                    </span>
-                  </p>
-                </div>
+                <SectionHeading
+                  light
+                  wordVariant="accent"
+                  description={
+                    <>
+                      {copy.heading.description}{' '}
+                      <span className="inline-block whitespace-nowrap rounded-full bg-white px-3 py-0.5 text-sm font-semibold text-primary">
+                        {copy.heading.deadlinePrefix} {timeline.applicationDeadline}
+                      </span>
+                    </>
+                  }
+                >
+                  {copy.heading.title}
+                </SectionHeading>
 
                 <div>
                   <div className="mb-2 flex justify-between text-sm text-white/70">
-                    <span>Заполнено</span>
+                    <span>{copy.progressLabel}</span>
                     <span className="tabular-nums">
-                      {doneCount} из {activeKeys.length}
+                      {doneCount} {copy.progressOf} {activeKeys.length}
                     </span>
                   </div>
                   <div
@@ -257,7 +239,7 @@ export default function ApplicationForm() {
               >
                 <Field
                   id="f-municipality"
-                  label="Город или район"
+                  label={F.municipality.label}
                   error={errorOf('municipality')}
                   valid={isValid('municipality')}
                 >
@@ -273,8 +255,8 @@ export default function ApplicationForm() {
 
                 <Field
                   id="f-orgName"
-                  label="Название организации или ИП"
-                  hint="Как в выписке из налоговой"
+                  label={F.orgName.label}
+                  hint={F.orgName.hint}
                   error={errorOf('orgName')}
                   valid={isValid('orgName')}
                 >
@@ -288,12 +270,7 @@ export default function ApplicationForm() {
                   />
                 </Field>
 
-                <Field
-                  id="f-inn"
-                  label="ИНН организации или ИП"
-                  error={errorOf('inn')}
-                  valid={isValid('inn')}
-                >
+                <Field id="f-inn" label={F.inn.label} error={errorOf('inn')} valid={isValid('inn')}>
                   <input
                     id="f-inn"
                     className={inputCls(errorOf('inn')) + ' tabular-nums tracking-wider'}
@@ -306,8 +283,8 @@ export default function ApplicationForm() {
 
                 <Field
                   id="f-address"
-                  label="Юридический адрес организации"
-                  hint={isIP ? 'Для ИП необязательно' : undefined}
+                  label={F.address.label}
+                  hint={isIP ? F.address.hintForIP : undefined}
                   required={!isIP}
                   error={errorOf('address')}
                   valid={isValid('address')}
@@ -323,7 +300,7 @@ export default function ApplicationForm() {
 
                 <Field
                   id="f-fullName"
-                  label="ФИО представителя"
+                  label={F.fullName.label}
                   error={errorOf('fullName')}
                   valid={isValid('fullName')}
                   className="md:col-span-2"
@@ -338,38 +315,28 @@ export default function ApplicationForm() {
                   />
                 </Field>
 
-                <Field
-                  id="f-phone"
-                  label="Контактный телефон"
-                  error={errorOf('phone')}
-                  valid={isValid('phone')}
-                >
+                <Field id="f-phone" label={F.phone.label} error={errorOf('phone')} valid={isValid('phone')}>
                   <input
                     id="f-phone"
                     className={inputCls(errorOf('phone')) + ' tabular-nums'}
                     type="tel"
                     inputMode="numeric"
                     autoComplete="tel"
-                    placeholder="8 (900) 000-00-00"
+                    placeholder={F.phone.placeholder}
                     value={formatPhone(form.phone)}
                     onChange={(e) => handlePhoneChange(e.target.value)}
                     onBlur={() => touch('phone')}
                   />
                 </Field>
 
-                <Field
-                  id="f-email"
-                  label="Email"
-                  error={errorOf('email')}
-                  valid={isValid('email')}
-                >
+                <Field id="f-email" label={F.email.label} error={errorOf('email')} valid={isValid('email')}>
                   <input
                     id="f-email"
                     className={inputCls(errorOf('email'))}
                     type="text"
                     inputMode="email"
                     autoComplete="email"
-                    placeholder="mail@mail.ru"
+                    placeholder={F.email.placeholder}
                     value={form.email}
                     onChange={(e) => update('email', e.target.value)}
                     onBlur={() => touch('email')}
@@ -402,9 +369,9 @@ export default function ApplicationForm() {
                       {form.consent && <CheckIcon className="h-3.5 w-3.5 text-primary" />}
                     </span>
                     <span>
-                      Согласен(на) на обработку персональных данных по{' '}
-                      <a href="/privacy" className="underline underline-offset-2 hover:text-white">
-                        политике конфиденциальности
+                      {F.consent.label}{' '}
+                      <a href={F.consent.linkUrl} className="underline underline-offset-2 hover:text-white">
+                        {F.consent.linkText}
                       </a>
                       <span aria-hidden className="ml-0.5 text-white/60">*</span>
                     </span>
@@ -422,12 +389,12 @@ export default function ApplicationForm() {
                     {status === 'sending' && (
                       <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary/30 border-t-primary" />
                     )}
-                    {status === 'sending' ? 'Отправляем' : 'Отправить заявку'}
+                    {status === 'sending' ? copy.submit.sending : copy.submit.idle}
                   </button>
 
                   {status === 'error' && (
                     <p className="text-sm text-white" role="alert">
-                      Заявка не отправилась — проверьте интернет и нажмите ещё раз.
+                      {copy.submit.error}
                     </p>
                   )}
                 </div>
@@ -509,24 +476,22 @@ function ErrorPill({ message }: { message: string | null }) {
 
 function SuccessState({ onReset }: { onReset: () => void }) {
   return (
-    <div className="relative mx-auto max-w-xl py-10 text-center md:py-16" role="status">
+    <div className="relative mx-auto max-w-xl py-20" role="status">
       <div className="mx-auto mb-8 grid h-20 w-20 place-items-center rounded-full bg-white">
         <CheckIcon className="h-10 w-10 text-primary" />
       </div>
-      <SectionHeading className="text-white">
-        Заявка <span className="bracket-word bracket-word--white">отправлена</span>
+      <SectionHeading light align="center" wordVariant="white" description={copy.success.text}>
+        {copy.success.title}
       </SectionHeading>
-      <p className="mt-6 text-white/80">
-        После завершения приёма заявок команда программы проведёт отбор и свяжется с участниками, которые
-        прошли конкурсный отбор. Подтверждение мы отправили вам на почту.
-      </p>
-      <button
-        type="button"
-        onClick={onReset}
-        className="mt-8 text-sm text-white/70 underline underline-offset-4 hover:text-white"
-      >
-        Отправить ещё одну заявку
-      </button>
+      <div className="text-center">
+        <button
+          type="button"
+          onClick={onReset}
+          className="mt-8 text-sm text-white/70 underline underline-offset-4 hover:text-white"
+        >
+          {copy.success.again}
+        </button>
+      </div>
     </div>
   )
 }
